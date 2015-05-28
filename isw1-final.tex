@@ -1,0 +1,307 @@
+\documentclass[a4paper,spanish]{article}
+
+\usepackage[spanish,activeacute]{babel}
+\usepackage{moreverb}
+\usepackage{fancyhdr}
+\usepackage{graphicx}
+\usepackage{multicol}
+
+\oddsidemargin 0in
+\textwidth 6.2in
+\topmargin 0in
+\addtolength{\topmargin}{-.5in}
+\textheight 10in
+\parskip=1ex
+\pagestyle{fancy}
+%usar el segundo nivel de enumeracion con letras
+%\renewcommand{\labelenumii}{\alph{enumii}. }
+
+\newcommand{\rev}{\marginpar{REVISAR}}
+\newcommand{\nohecho}{\marginpar{NO HECHO}}
+
+%espaciado
+\newcommand{\vsp}{\vspace{0.4cm}}
+\newcommand{\hsp}{\hspace{0.12cm}}
+
+%comandos para el resumen
+\newcommand{\tab}{\hspace*{1cm}}
+\newcommand{\defi}[2]{\bfseries #1: \mdseries #2}
+\newcommand{\ldefi}[1]{\bfseries #1: \mdseries}
+\newcommand{\sndefi}[1]{\newline \tab \bfseries #1 \mdseries}
+\newcommand{\sdefi}[2]{\newline \tab \bfseries #1: \mdseries #2}
+\newcommand{\ssdefi}[2]{\newline \tab\tab \bfseries #1: \mdseries #2}
+\newcommand{\sssdefi}[2]{\newline \tab\tab\tab \bfseries #1: \mdseries #2}
+\newcommand{\subi}{\newline \tab \ensuremath{\bullet} }
+\newcommand{\ssubi}{\newline \tab\tab \ensuremath{\bullet} }
+\newcommand{\llamada}[1]{\begin{center} \bfseries #1 \mdseries \end{center}}
+\newcommand{\nota}[1]{\vsp\defi{Nota}{#1}\vsp}
+
+
+%noindent en todos lados
+\parindent=0in 
+
+\lhead{Ingenier\'{i}a de Software 1}
+\rhead{Apunte de repaso general}
+
+\cfoot{$\thepage$ de \pageref{theend}}
+
+\begin{document}
+
+Disclaimer: Este apunte no es autocontenido y fue pensado como un repaso de los conceptos, 
+no para aprenderlos de aqu'i directamente.
+%\begin{multicols}{2}
+%\tableofcontents
+%\end{multicols}
+%\newpage
+
+\section{Michael Jackson}
+
+\subsection{Dominio de aplicaci'on}
+
+\defi{Problema de desarrollo}{Problema de construir una m'aquina (ej: word=m'aquina de escribir)}
+
+\defi{Dominio de aplicaci'on}{Parte de mundo en el que la m'aquina se hace sentir $\Rightarrow$ lugar en el
+que es evaluada/aprobada}
+
+Identificarlo es necesario para enfocarse en los requerimientos. Puede incluir cosas concrectas y 
+abstractas (reglas de negocios). Hay que prestarle mucha atenci'on, entenderlo \textbf{es} entender 
+lo que hay que hacer. Da la base para elegir apropiadamente el \textbf{marco} y los \textbf{m'etodos}
+para la soluci'on.
+
+Ej: Puede haber mecanismos preexistentes, que pueden tener que ser incorporados, modificados o
+eliminados, y es necesario entenderlos para hacerlo.
+
+El dominio de aplicaci'on es el material para trabajar, un \textbf{requerimiento} es qu'e hacer
+con 'el.
+
+Se debe diferenciar el dominio de aplicaci'on de la m'aquina a construir (es dificil en muchos casos).
+
+\subsection{Dominios}
+
+\ldefi{Dominios}
+\sndefi{Est'aticos}
+\sdefi{Din'amicos}{El tiempo es una dimensi'on en la cual las cosas cambian. Noci'on de \textit{estado}.}
+\ssdefi{Inertes}{El estado solo cambia a las 'ordenes del usuario (procesador de texto)}
+\ssdefi{Reactivos}{El estado cambia seg'un sus propias reglas, pero s'olo reaccionando ante una 'orden (base de datos)}
+\ssdefi{Activos}{El estado cambia todo el tiempo por s'i mismo. (sistema operativo)}
+\sssdefi{Aut'onomo}{No controlable (personas de la calle). Considerar cambios la m'aquina no va a medir.}
+\sssdefi{Biddable}{Controlable por sugerencia (usuarios posibles de instruir)}
+\sssdefi{Programable}{Controlable totalmente. En general se convierte en parte de la m'aquina} \\
+\tab\tab Estas categorizaciones depende mucho de los l'imites que se establezcan para el dominio.
+
+Ej: Estados de una construcci'on vial, en c/u hay que desviar el tr'afico en forma diferente, pero
+las rutas en general son est'aticas para otros procesos (deliveries).
+
+Para ver un dominio din'amico como est'atico saco una foto.
+
+\defi{Unidimensional vs multidimensional}{Comunicaci'on punto a punto, texto vs grafos, imagen, teleconferencia}
+
+\defi{Tangibles}{De mundo real. Inherentemente dificiles de describir porque son informales. Introducen reglas
+de tiempo real.} \\
+\defi{Intangibles}{Abstractos. Son casi siempre parte de la m'aquina a construir}
+
+\defi{Interacciones de dominio}{Dividimos el dominio de aplicaci'on en varios dominios para modularizar,
+pero s'olo si los \textbf{fen'omenos} de cada dominio estan muy o enteramente separados.}
+
+\defi{Fen'omenos compartidos}{Lugar de interacci'on de los dominios (intersecci'on). Los fen'omenos compartidos
+limitan la independencia de cada dominio, pero esta limitaci'on debe ser peque~na en comparaci'on con el tama~no
+del dominio para que la partici'on tenga sentido.}
+
+\defi{M'aquina}{Interact'ua con algunos dominios de la partici'on. Debe conectar el grafo de interacci'on
+de los dominios (un dominio que no tiene un camino de interacci'on hacia la m'aquina indica un error en el
+modelo).}
+
+Se debe entender cada dominio y las interacciones (\textbf{fen'omenos compartidos}) entre 'estos y de 'estos
+con la m'aquina.
+
+\defi{Contexto del problema}{Dominio de aplicaci'on $\cup$ M'aquina $= \{D_1,...,D_n\} \cup$ M'aquina donde 
+los $D_i$ son los dominios en los que se parte el dominion de aplicaci'on}
+
+\defi{Prinicipio de relevancia de dominio}{Todo lo que es relevante a un \textbf{requerimiento} debe aparecer
+en alguna parte del dominio de aplicaci'on. Esto implica que haya partes importantes del dominio de aplicaci'on
+no conectadas directamente a la m'aquina. Este principio se usa para establecer la partici'on como los 
+sustantivos importantes que aparezcan en los \textbf{requerimientos}.}
+
+\subsection{Requerimientos}
+
+La ingenier'ia de software tradicionalmente solo distingu'ia entre dentro y fuera de la m'aquina. Esto era un
+problema porque el cliente (eventualmente) sabe poco de software y el equipo de desarrollo poco del negocio
+del cliente. Para poder definir los \textbf{requerimientos} se precisa \textbf{incluir el dominio de
+aplicaci'on dentro del espectro del problema}.
+
+La m'aquina puede asegurar los requerimientos solo a trav'es de los \textbf{fen'omenos compartidos} con
+los dominios $\in$ dominio de aplicaci'on. \\
+\tab Un evento compartido sucede en 2 dominios 'o en un dominio y la m'aquina, aunque de cada lado se
+ve distinto (de un lado la suba de temperatura y del otro la se~nal el'ectrica del sensor).
+
+Gap entre requerimientos y lo que la m'aquina puede asegurar: Es producido por el hecho de que los requerimientos
+no est'an formulados exclusivamente en t'erminos de fen'omenos compartidos y las cosas que pasan en la parte de
+``afuera'' del dominio de aplicaci'on no es controlable directamente por la m'aquina (e incluso a veces 
+incontrolable). Ej: El requerimiento dice que el usuario escribe una carta, pero 'este se niega a usar el teclado.
+
+\defi{Especificaci'on}{Fen'omenos compartidos (la intersecci'on) entre el dominio de 
+aplicaci'on y la m'aquina. Se derivan de los requerimientos, que son un subconjunto del dominio de
+aplicaci'on.}
+
+La idea es que entre la computadora y el programa (la m'aquina) impliquen la especificaci'on que a su
+vez implica la satisfacci'on de requerimientos (idealmente, ya que los requerimientos en muchos casos
+pertenecen al mundo informal y pueden tener errores).
+
+\subsection{Especificaciones}
+
+\defi{Especificaci'on}{Como fen'omenos compartidos, no necesariamente tienen sentido en el entorno
+(dominio de aplicaci'on) porque \textbf{no son requerimientos} sino que fueron derivados de ellos.}
+
+Las especificaciones no pueden ser solamente abstractas porque al pertenecer a la intersecci'on pueden
+contener cosas del dominio de aplicaci'on, o sea, del mundo real. Si la especificaci'on es solo abstracta,
+esto implicar'a que el problema que se est'a atacando sea abstracto.
+
+\section{No silver bullet}
+
+\ldefi{Problemas de la ingenier'ia de software}
+\sdefi{Esencia}{Problemas inherentes}
+\sdefi{Accidente}{Problemas coyunturales}
+
+\defi{Programa}{Es una representaci'on conceptual, lo dificil es especificarla, dise~narla y testearla, 
+no programarla.}
+
+\ldefi{Problemas esenciales}
+\sdefi{Complejidad}{Todas las partes son diferentes (si son iguales, se hacen comportamiento compartido)
+lo cual redunda en un enorme n'umero de estados (esto hace dificil el testing y los controles como el de 
+seguridad).}
+\sdefi{Conformidad}{Hay que lidiar con muchas cosas diferentes (reglas, procesos existentes) hechas por 
+diferentes personas o instituciones a lo largo de mucho tiempo, lo que provoca que no necesariamente 
+hay una armon'ia entre ellas. Otras disciplinas (f'isica) buscan una armon'ia que puede ser dificil 
+de encontrar, pero al menos existente.}
+\sdefi{Cambiabilidad}{Al existir la posibilidad de hacer cambios baratos (en el sentido material) 'estos
+son exigidos, a diferencia de en otras industrias que el producto entero es reemplazado por uno nuevo.
+El programa tiene que ser configurable, y adaptable como m'inimo al hardware sobre el cual est'a corriendo,
+que cambia muy r'apidamente.}
+\sdefi{Invisibilidad}{La inherente realidad abstracta del software hace que sea m'as dificil hacer un 
+diagrama que lo represente o, al hacerlo, el gap entre diagrama y realidad es mayor que entre un plano
+y el edificio.}
+
+\defi{M'etodos anteriores}{(atacaron accidentes, no escencia, por lo que su ganancia es limitada)}
+\sdefi{Lenguajes de alto nivel}{Solo mejoran el desarrollo de la m'aquina}
+\sdefi{Multitarea}{Solo mejora turnaround}
+\sdefi{Unificaci'on de herramientas}{Solo mejora el desarrollo}
+
+Lo dificil acerca de la ingenier'ia de software es decidir que se quiere decir, no decirlo. 
+
+La inteligencia artificial no sirve de todo, porque para hacer un sistema experto es necesario tener un
+experto humano previamente.
+
+Programaci'on autom'atica es equivalente a m'as alto nivel, siempre se debe escribir el input 
+(la especificaci'on).
+
+Lo importante es debuguear la especificacion, asi que los verificadores autom'aticos no sirven.
+
+\section{M\'{a}quinas de estado finitas (FSMs)}
+
+\defi{FSM}{Nodos y transiciones con label}
+
+\defi{Deadlock}{Estado sin trancisiones saliendo de 'el. No necesariamente implica un mal modelado
+(puede indicar una finalizaci'on del proceso).}
+
+\defi{Composici'on paralela $A||B$}{Los nodos son pares ordenados de estados. Se avanza en la coordenada
+necesaria cuando uno avanza para las etiquetas no compartidas o cuando \textbf{ambos} avanzan en las
+etiquetas compartidas. Esto sirve para ``comunicar'' distintas FSMs.}
+
+\ldefi{Extensiones} \\
+\tab Agregar a las etiquetas \textbf{condiciones} o \textbf{acciones} sobre variables. \\
+\tab Agregar a los nodos condiciones (solo se puede reposar en ellos si se cumple la condici'on).
+
+\defi{Temporizadas}{Se agrega el tipo de variable \texttt{Timer}}
+
+Se puede decidir hacerlas no determin'isticas.
+
+Las FSMs especifican aspectos din'amicos (el mapa conceptual solo est'aticos). Se pueden bindear al modelo
+y luego usar OCL.
+
+\section{Descripciones y an\'{a}lisis de software}
+
+\defi{Ingenier'ia de software}{Aplicaci'on del conocimiento cient'ifico al proceso de desarrollo.}
+
+\defi{Proceso de desarrollo}{Forma de transformar requerimientos en productos de software.}
+
+\defi{Calidad}{Depende del punto de vista (programador, usuario, manager)}
+
+No silver bullet, pero buenas pr'acticas probadas mejoran el funcionamiento.
+
+\defi{Requerimientos}{Funcionales y no funcionales, 'estos 'ultimos pueden ser sobre el producto
+(seguridad, performance) o sobre el proceso (tiempos de entrega, modalidad de trabajo)}.
+
+El usuario no siempre necesita lo que quiere, se debe intentar mantener el sistema lo mas simple posible. \\
+\tab Definir prioridad para los requerimientos (esencial, importante, deseable).
+
+\defi{An'alisis de escenarios}{Ejemplos de sesiones de interacciones. Criterios de aprobaci'on para testing.}
+\sdefi{Lenguajes}{Casos de uso, diagramas de secuencia, diagramas de actividad, castellano} \\
+\tab \textbf{no} son requerimientos, los requerimientos se derivan de ellos.
+
+\defi{Casos de uso}{Actores, descripci'on en castellano pero con estructura}
+\sdefi{Actor}{Todo usuario o sistema que interactua con la ma'quina. Una persona en particular puede ser
+varios actores (tipos de usuario).} \\
+\defi{Diagrama de casos de uso}{Relaci'on entre casos (usa, extiende). Modularizaci'on, D\&C, cada diagrama
+es interpretable independientemente.}
+
+Los casos de uso son disparados por un actor o por tiempo. Se pueden ir desgranando incrementalmente.
+Son los servicios a los usuarios y sirven para guiar el desarrollo (dise~no, implementaci'on y testing).
+Forma adecuada de generar modelo que son los requerimientos. Los requerimientos funcionales son un caso
+de uso, los no funcionales suelen asociarse a alguno(s).
+
+Otros documentos: Glosario, prototipo de interfaz.
+
+\defi{Diagrama de colaboraci'on}{Describe interacciones entre instancia de actor y de caso de uso}
+
+\defi{Perfiles de trabajo}{Analista (director), especificador de casos de uso, dise~nador de GUI, 
+arquitecto}
+
+Pasos del proceso de modelado:
+\begin{enumerate}
+\item Identificar actores y casos de uso (t'itulos)
+\item Asignar prioridades a casos de uso
+\item Detallar casos de uso (precondici'on, postcondici'on, caminos alternativos y prohibidos). Incluye interfase
+con actores y recursos.
+\item Prototipar interfase de usuario
+\item Hacer modelo de casos de uso (ayuda a generalizar casos de uso)
+\end{enumerate}
+
+\defi{Rastro de requerimientos}{Al cambiar los requerimientos se analizan los casos de uso afectados en el modelo 
+y se ven que partes son afectadas del dise~no y la implementaci'on}
+\sdefi{Matriz de trazabilidad}{Relaci'on de cada caso de uso con su impacto. En las columnas aparecen los distintos
+aspectos del sistema (m'odulos, programas, recursos, procesos) y las filas los casos.}
+
+\defi{Cuantificaci'on}{Vol'umen afecta soluci'on tecnol'ogica posible.}
+
+\defi{Confiabilidad}{Se debe definir una m'etrica, siempre asumiendo uso aceptable}
+
+\defi{Restricciones}{Externas (mundo real), internas (reglas del cliente) y de interfaz (con otros sistemas).}
+
+
+\section{Arquitecturas de software}
+
+
+
+
+
+\section{Res'umen de documentos}
+
+\begin{multicols}{2}
+\begin{itemize}
+\item Modelo conceptual
+\item Caso de uso
+\item Diagrama de casos de uso
+\item Diagrama de colaboraci'on
+\item Glosario
+\item Prototipo de interfaz
+\item M'aquina de estado finita (FSM)
+\item Diagrama de secuencia
+\item Diagrama de actividad
+\item Diagrama de flujo de datos (DFD)
+\item Diagrama de entidad relaci'on (DER)
+\item Diagrama de flujo de trabajo (workflow)
+\end{itemize}
+\end{multicols}
+
+\label{theend}
+\end{document}
